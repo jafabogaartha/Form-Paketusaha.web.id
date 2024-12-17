@@ -3,8 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Paket Usaha Makanan & Minuman terbaik, solusi bisnis yang cocok untuk Anda. Temukan peluang usaha dengan berbagai pilihan paket usaha yang mudah dijalankan.">
+    <meta name="robots" content="index, follow">
     <title>Paket Usaha Makanan & Minuman</title>
+    <link rel="icon" href="img/favicon.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "url": "https://paketusaha.web.id",
+            "name": "Paket Usaha Makanan & Minuman",
+            "description": "Temukan peluang bisnis terbaik dengan berbagai pilihan paket usaha makanan dan minuman.",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://paketusaha.web.id/?search={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+    </script>
+
+    <!-- OpenGraph meta tags -->
+    <meta property="og:title" content="Paket Usaha Makanan & Minuman">
+    <meta property="og:description" content="Temukan peluang bisnis terbaik Anda dengan berbagai pilihan paket usaha makanan dan minuman yang cocok untuk Anda.">
+    <meta property="og:url" content="https://paketusaha.web.id">
+    <meta property="og:image" content="img/og-image.jpg">
+    <meta property="og:type" content="website">
+
     <style>
         * {
             margin: 0;
@@ -33,6 +60,14 @@
         .header h1 {
             font-size: 22px;
             margin-bottom: 10px;
+        }
+        .breadcrumb {
+            margin: 10px 15px;
+            font-size: 14px;
+        }
+        .breadcrumb a {
+            text-decoration: none;
+            color: #ff6b6b;
         }
         .search-filter {
             display: flex;
@@ -118,6 +153,7 @@
 </head>
 <body>
     <div class="container">
+
         <div class="header">
             <h1>Paket Usaha Makanan & Minuman</h1>
             <p>Temukan Peluang Bisnis Terbaik Anda</p>
@@ -140,11 +176,11 @@
     <script>
         const businesses = [
             { name: "Esteh Ibukota", type: "Minuman", link: "/estehibukota.html" },
-            { name: "Chick Ichick", type: "Makanan", link: "/chickichick.html" },
-            { name: "Chickiuruyuk", type: "Makanan", link: "/chickuruyuk.html" },
+            { name: "Chicki Chick", type: "Makanan", link: "/chickichick.html" },
+            { name: "Chicki Uruyuk", type: "Makanan", link: "/chickuruyuk.html" },
             { name: "Raja Steak", type: "Makanan", link: "/rajasteak.html" },
-            { name: "Mentoast", type: "Makanan", link: "/mentoast.html" },
-            { name: "Mybestea", type: "Minuman", link: "/mybestea.html" },
+            { name: "Men Toast", type: "Makanan", link: "/mentoast.html" },
+            { name: "My Best Tea", type: "Minuman", link: "/mybestea.html" },
             { name: "Nice Coffee", type: "Minuman", link: "/nicecoffee.html" },
             { name: "Seblak Express", type: "Makanan", link: "/seblakexpress.html" },
             { name: "Tahu Nonyor", type: "Makanan", link: "/tahunonyor.html" },
