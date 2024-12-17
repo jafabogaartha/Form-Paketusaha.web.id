@@ -1,1 +1,213 @@
- 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paket Usaha Makanan & Minuman</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f7f7;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            width: 100%; /* Full width */
+            max-width: 100%; /* Ensure no max-width limits */
+            margin: 0; /* Remove margins */
+            padding: 0; /* Remove padding */
+        }
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+            text-align: center;
+            padding: 20px 15px;
+            width: 100%; /* Full width */
+        }
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        .search-filter {
+            display: flex;
+            margin: 15px 15px;
+            gap: 10px;
+        }
+        .search-input {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .filter-btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .business-list {
+            display: grid;
+            gap: 10px;
+            padding: 0 15px; /* Slight padding to prevent text touching edges */
+        }
+        .business-item {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .business-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        }
+        .business-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-food {
+            background-color: #4cd137;
+            color: white;
+        }
+        .badge-drink {
+            background-color: #0097e6;
+            color: white;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+            margin-top: 15px;
+            width: 100%; /* Full width */
+        }
+
+        /* Specific mobile adjustments */
+        @media (max-width: 480px) {
+            .search-filter {
+                margin: 10px;
+            }
+            .business-link {
+                padding: 12px;
+            }
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Paket Usaha Makanan & Minuman</h1>
+            <p>Temukan Peluang Bisnis Terbaik Anda</p>
+        </div>
+
+        <div class="search-filter">
+            <input type="text" class="search-input" id="searchInput" placeholder="Cari paket usaha...">
+            <button class="filter-btn" id="filterBtn">Filter</button>
+        </div>
+
+        <div class="business-list" id="businessList">
+            <!-- Business items will be dynamically added here -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Paket Usaha - Solusi Bisnis Makanan Anda</p>
+    </footer>
+
+    <script>
+        const businesses = [
+            { name: "Esteh Ibukota", type: "Minuman", link: "/estehibukota.html" },
+            { name: "Chick Ichick", type: "Makanan", link: "/chickichick.html" },
+            { name: "Chickiuruyuk", type: "Makanan", link: "/chickuruyuk.html" },
+            { name: "Raja Steak", type: "Makanan", link: "/rajasteak.html" },
+            { name: "Mentoast", type: "Makanan", link: "/mentoast.html" },
+            { name: "Mybestea", type: "Minuman", link: "/mybestea.html" },
+            { name: "Nice Coffee", type: "Minuman", link: "/nicecoffee.html" },
+            { name: "Seblak Express", type: "Makanan", link: "/seblakexpress.html" },
+            { name: "Tahu Nonyor", type: "Makanan", link: "/tahunonyor.html" },
+            { name: "You Need Mie", type: "Makanan", link: "/youneedmie.html" },
+            { name: "Kentang Gantenk", type: "Makanan", link: "/kentanggantenk.html" }
+        ];
+
+        const businessList = document.getElementById('businessList');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtn = document.getElementById('filterBtn');
+
+        function renderBusinesses(filteredBusinesses = businesses) {
+            businessList.innerHTML = '';
+            filteredBusinesses.forEach(business => {
+                const businessItem = document.createElement('div');
+                businessItem.classList.add('business-item');
+                
+                const badge = business.type === 'Makanan' ? 'badge-food' : 'badge-drink';
+                
+                businessItem.innerHTML = `
+                    <a href="${business.link}" class="business-link">
+                        <span>${business.name}</span>
+                        <span class="badge ${badge}">${business.type}</span>
+                    </a>
+                `;
+                
+                businessList.appendChild(businessItem);
+            });
+        }
+
+        // Initial render
+        renderBusinesses();
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredBusinesses = businesses.filter(business => 
+                business.name.toLowerCase().includes(searchTerm)
+            );
+            renderBusinesses(filteredBusinesses);
+        });
+
+        // Filter functionality (toggle between food and drink)
+        let currentFilter = 'all';
+        filterBtn.addEventListener('click', () => {
+            switch(currentFilter) {
+                case 'all':
+                    currentFilter = 'Makanan';
+                    filterBtn.textContent = 'Makanan';
+                    renderBusinesses(businesses.filter(b => b.type === 'Makanan'));
+                    break;
+                case 'Makanan':
+                    currentFilter = 'Minuman';
+                    filterBtn.textContent = 'Minuman';
+                    renderBusinesses(businesses.filter(b => b.type === 'Minuman'));
+                    break;
+                case 'Minuman':
+                    currentFilter = 'all';
+                    filterBtn.textContent = 'Filter';
+                    renderBusinesses();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
