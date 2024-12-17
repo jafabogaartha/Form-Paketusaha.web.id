@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kemitraan Mentoast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            /* Warna gelap yang kuat */
+            --secondary-color: #ecf0f1;
+            /* Warna latar belakang ringan */
+            --accent-color: #3498db;
+            /* Warna aksen cerah */
+            --text-color: #333;
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: white;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.05),
+                0 4px 15px rgba(0, 0, 0, 0.03);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
+        }
+
+        .form-section {
+            padding: 40px 30px;
+        }
+
+        .form-section h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 800;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-section h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+        }
+
+        .form-input {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-input label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .form-input input,
+        .form-input select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: var(--secondary-color);
+        }
+
+        .form-input input:focus,
+        .form-input select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .dana-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .dana-option {
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .dana-option:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .dana-option.selected {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsivitas Full Width untuk Mobile */
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+            }
+
+            .form-section {
+                padding: 30px 20px;
+            }
+
+            .form-section h1 {
+                font-size: 1.6rem;
+            }
+
+            .dana-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animasi Tambahan */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #additional-address {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h1>Form Kemitraan Mentoast</h1>
+            <form name="form-kontak" id="partnership-form">
+                <div class="form-input">
+                    <div class="form-input" style="display:none;">
+                        <label for="Nama Usaha">Nama Usaha</label>
+                        <input type="text" id="Nama Usaha" name="Nama Usaha" value="Mentoast" required
+                            placeholder="Masukkan nama lengkap">
+                    </div>
+
+                    <div class="form-input">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="form-input">
+                        <label for="Alamat">Alamat</label>
+                        <input type="text" id="Alamat" name="Alamat" required placeholder="Masukkan Alamat">
+                    </div>
+                    <div class="form-input">
+                        <label for="pekerjaan">Pekerjaan</label>
+                        <input type="text" id="pekerjaan" name="pekerjaan" required placeholder="Masukkan pekerjaan">
+                    </div>
+                    <div class="form-input">
+                        <label for="Usia">Usia</label>
+                        <input type="number" id="Usia" name="Usia" required min="0" max="120"
+                            placeholder="Masukkan Usia Anda" data-tahun="Tahun">
+                    </div>
+                    <div class="form-input">
+                        <label for="Opening">Rencana Opening ( Tanggal rencana Opening )</label>
+                        <input type="text" id="Opening" name="Opening" required placeholder="Masukkan Rencana Opening">
+                    </div>
+
+                    <div class="form-input">
+                        <label for="no-hp">Nomor Handphone</label>
+                        <input type="tel" id="no-hp" name="no-hp" pattern="[0-9]{10,14}" required
+                            placeholder="Contoh: 081234567890">
+                    </div>
+
+                    <div class="form-input">
+                        <label for="lokasi-usaha">Lokasi Usaha</label>
+                        <select id="lokasi-usaha" name="lokasi-usaha" required>
+                            <option value="" selected disabled>Pilih Status Lokasi</option>
+                            <option value="Belum">Belum Punya Lokasi</option>
+                            <option value="Sudah">Sudah Punya Lokasi</option>
+                        </select>
+                    </div>
+
+                    <div id="additional-address" class="form-input">
+                        <label for="alamat-usaha">Alamat Lokasi Usaha</label>
+                        <input type="text" id="alamat-usaha" name="alamat-usaha"
+                            placeholder="Masukkan alamat lokasi usaha">
+                    </div>
+
+                    <div class="form-input">
+                        <label>Dana Untuk Buka Usaha ( Paket termurah kami di harga 2 jutaan )</label>
+                        <div class="dana-options">
+                            <div class="dana-option" data-value="2.000.000-5.000.000">
+                                Rp 2.000.000 - Rp 5.000.000
+                            </div>
+                            <div class="dana-option" data-value="6.000.000-8.000.000">
+                                Rp 6.000.000 - Rp 8.000.000
+                            </div>
+                            <div class="dana-option" data-value="9.000.000-15.000.000">
+                                Rp 9.000.000 - Rp 15.000.000
+                            </div>
+                        </div>
+                        <input type="hidden" id="dana-usaha" name="dana-usaha" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Hubungi Admin di WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        // Enhanced Admin Details with additional metadata
+        const adminDetails = [
+            {
+                number: '6282124952606',
+                name: 'Admin Livia',
+                lastAssignedTime: null,
+                assignmentCount: 0
+            },
+            {
+                number: '6281212125422',
+                name: 'Admin Reka',
+                lastAssignedTime: null,
+                assignmentCount: 0
+            }
+        ];
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwJeHleSLg0JQE87Oc4dwYQv509YqIFeu9FNBu6siTFoty3JGl_Q_psdqHN5MnruBs/exec';
+        const form = document.getElementById('partnership-form');
+        const lokasiUsahaSelect = document.getElementById('lokasi-usaha');
+        const additionalAddressDiv = document.getElementById('additional-address');
+        const additionalAddressInput = document.getElementById('alamat-usaha');
+        const danaOptions = document.querySelectorAll('.dana-option');
+        const danaUsahaInput = document.getElementById('dana-usaha');
+        let isSubmitting = false;
+
+        // Function to get IP address (browser-based method)
+        function getClientIP() {
+            return new Promise((resolve) => {
+                // Fallback method if WebRTC fails
+                const fallbackIP = `fallback_${Math.random().toString(36).substr(2, 9)}`;
+
+                window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+
+                if (!window.RTCPeerConnection) {
+                    resolve(fallbackIP);
+                    return;
+                }
+
+                const pc = new RTCPeerConnection({
+                    iceServers: []
+                });
+
+                pc.createDataChannel("");
+
+                pc.createOffer((offer) => {
+                    pc.setLocalDescription(offer);
+                }, () => { });
+
+                pc.onicecandidate = (ice) => {
+                    if (!ice || !ice.candidate || !ice.candidate.candidate) {
+                        resolve(fallbackIP);
+                        return;
+                    }
+
+                    const myIP = ice.candidate.candidate.split(' ')[4];
+                    resolve(myIP);
+                    pc.close();
+                };
+            });
+        }
+
+        // Enhanced admin selection function
+        async function selectAdminContact() {
+            // Retrieve submission history from localStorage
+            const ipAddress = await getClientIP();
+            const submissionHistory = JSON.parse(localStorage.getItem('partnershipSubmissions') || '[]');
+
+            // Check IP's previous admin assignment
+            const ipPreviousAdmin = submissionHistory
+                .filter(submission => submission.ipAddress === ipAddress)
+                .map(submission => submission.adminNama)
+                .pop(); // Get the most recent admin for this IP
+
+            // Get current time for deterministic selection
+            const currentTime = new Date();
+            const currentSeconds = currentTime.getSeconds();
+
+            // Determine admin based on seconds
+            let selectedAdmin;
+            if (currentSeconds >= 1 && currentSeconds <= 30) {
+                selectedAdmin = adminDetails.find(admin => admin.name === 'Admin Reka');
+            } else {
+                selectedAdmin = adminDetails.find(admin => admin.name === 'Admin Livia');
+            }
+
+            // Fallback or override logic
+            if (ipPreviousAdmin) {
+                // If IP has previous admin, try to alternate
+                const alternateAdmin = adminDetails.find(admin => admin.name !== ipPreviousAdmin);
+                if (alternateAdmin) {
+                    selectedAdmin = alternateAdmin;
+                }
+            }
+
+            // Update admin metadata
+            selectedAdmin.lastAssignedTime = currentTime;
+            selectedAdmin.assignmentCount++;
+
+            return {
+                number: selectedAdmin.number,
+                name: selectedAdmin.name
+            };
+        }
+
+        // Location status dynamic form
+        lokasiUsahaSelect.addEventListener('change', function () {
+            if (this.value === 'Sudah') {
+                additionalAddressDiv.style.display = 'block';
+                additionalAddressInput.required = true;
+            } else {
+                additionalAddressDiv.style.display = 'none';
+                additionalAddressInput.required = false;
+                additionalAddressInput.value = '';
+            }
+        });
+
+        // Dana Usaha Selection
+        danaOptions.forEach(option => {
+            option.addEventListener('click', function () {
+                // Remove selected from all options
+                danaOptions.forEach(opt => opt.classList.remove('selected'));
+
+                // Add selected to clicked option
+                this.classList.add('selected');
+
+                // Set hidden input value
+                danaUsahaInput.value = this.getAttribute('data-value');
+            });
+        });
+
+        // Form Submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (isSubmitting) return;
+
+            if (!danaUsahaInput.value) {
+                alert('Silakan pilih nominal dana usaha');
+                return;
+            }
+
+            isSubmitting = true;
+
+            try {
+                // Get enhanced random admin selection
+                const randomAdmin = await selectAdminContact();
+
+                const formData = new FormData(form);
+
+                // Modify form data based on location status
+                if (lokasiUsahaSelect.value === 'Belum') {
+                    formData.set('alamat-usaha', 'Belum Punya');
+                }
+
+                // Get form values for WhatsApp message
+                const nama = formData.get('nama');
+                const alamat = formData.get('Alamat');
+                const danaUsaha = danaUsahaInput.value;
+
+                // Add admin to form data for spreadsheet tracking
+                formData.append('admin', randomAdmin.name);
+
+                // Prepare WhatsApp message
+                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha dengan budget ${danaUsaha}`);
+                const waLink = `https://wa.me/${randomAdmin.number}?text=${waMessage}`;
+
+                // Save data to local storage with IP tracking
+                const submissionData = {
+                    nama,
+                    alamat,
+                    danaUsaha,
+                    kontakAdmin: randomAdmin.number,
+                    adminNama: randomAdmin.name,
+                    tanggal: new Date().toISOString(),
+                    ipAddress: await getClientIP() // Store IP for tracking
+                };
+
+                // Check and create submissions array in local storage
+                let submissions = JSON.parse(localStorage.getItem('partnershipSubmissions') || '[]');
+                submissions.push(submissionData);
+                localStorage.setItem('partnershipSubmissions', JSON.stringify(submissions));
+
+                // Submit to Google Sheet
+                fetch(scriptURL, { method: 'POST', body: formData })
+                    .then(response => {
+                        if (response.ok) {
+                            // Directly redirect to WhatsApp without additional alerts
+                            window.location.href = waLink;
+                        } else {
+                            alert('Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.');
+                            isSubmitting = false;
+                        }
+                    })
+                    .catch(error => {
+                        alert('Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.');
+                        console.error('Error!', error.message);
+                        isSubmitting = false;
+                    });
+            } catch (error) {
+                console.error('Admin selection error:', error);
+                alert('Terjadi kesalahan dalam pemilihan admin. Silakan coba lagi.');
+                isSubmitting = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
