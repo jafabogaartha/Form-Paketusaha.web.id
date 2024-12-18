@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kemitraan You Needmie</title>
+    <title>Kemitraan You Need Mie</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -201,12 +201,12 @@
 <body>
     <div class="container">
         <div class="form-section">
-            <h1>Form Kemitraan You Needmie</h1>
+            <h1>Form Kemitraan You Need Mie</h1>
             <form name="form-kontak" id="partnership-form">
                 <div class="form-input">
                     <div class="form-input" style="display:none;">
                         <label for="Nama Usaha">Nama Usaha</label>
-                        <input type="text" id="Nama Usaha" name="Nama Usaha" value="You Needmie" required
+                        <input type="text" id="Nama Usaha" name="Nama Usaha" value="You Need Mie" required
                             placeholder="Masukkan nama lengkap">
                     </div>
 
@@ -228,7 +228,7 @@
                             placeholder="Masukkan Usia Anda" data-tahun="Tahun">
                     </div>
                     <div class="form-input">
-                        <label for="Opening">Rencana Opening ( Tanggal rencana Opening )</label>
+                        <label for="Opening">Rencana Opening ( Tanggal rencana Opening tanggal dan bulan )</label>
                         <input type="text" id="Opening" name="Opening" required placeholder="Masukkan Rencana Opening">
                     </div>
 
@@ -268,14 +268,22 @@
                         </div>
                         <input type="hidden" id="dana-usaha" name="dana-usaha" required>
                     </div>
+                    <div class="form-input">
+                    <label for="sumber-informasi">Sumber Informasi</label>
+                    <select id="sumber-informasi" name="sumber-informasi" required>
+                        <option value="" selected disabled>Pilih Sumber Informasi</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="TikTok">TikTok</option>
+                        <option value="Lainnya">Sumber Lainnya</option>
+                    </select>
+                </div>
 
                     <button type="submit" class="submit-btn">Hubungi Admin di WhatsApp</button>
             </form>
         </div>
     </div>
 
-    <script>
-
+<script>
         // Enhanced Admin Details with additional metadata
         const adminDetails = [
             {
@@ -434,12 +442,13 @@
                 const nama = formData.get('nama');
                 const alamat = formData.get('Alamat');
                 const danaUsaha = danaUsahaInput.value;
+                const sumberInformasi = formData.get('sumber-informasi');
 
                 // Add admin to form data for spreadsheet tracking
                 formData.append('admin', randomAdmin.name);
 
-                // Prepare WhatsApp message
-                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha dengan budget ${danaUsaha}`);
+                // Prepare WhatsApp message with additional source information
+                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha dengan budget ${danaUsaha}. Saya dapat informasi dari ${sumberInformasi}`);
                 const waLink = `https://wa.me/${randomAdmin.number}?text=${waMessage}`;
 
                 // Save data to local storage with IP tracking
@@ -447,6 +456,7 @@
                     nama,
                     alamat,
                     danaUsaha,
+                    sumberInformasi,
                     kontakAdmin: randomAdmin.number,
                     adminNama: randomAdmin.name,
                     tanggal: new Date().toISOString(),
