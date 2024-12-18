@@ -283,7 +283,8 @@
         </div>
     </div>
 
-<script>
+
+    <script>
         // Enhanced Admin Details with additional metadata
         const adminDetails = [
             {
@@ -299,7 +300,7 @@
                 assignmentCount: 0
             }
         ];
-
+    
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwJeHleSLg0JQE87Oc4dwYQv509YqIFeu9FNBu6siTFoty3JGl_Q_psdqHN5MnruBs/exec';
         const form = document.getElementById('partnership-form');
         const lokasiUsahaSelect = document.getElementById('lokasi-usaha');
@@ -308,86 +309,79 @@
         const danaOptions = document.querySelectorAll('.dana-option');
         const danaUsahaInput = document.getElementById('dana-usaha');
         let isSubmitting = false;
-
+    
         // Function to get IP address (browser-based method)
         function getClientIP() {
             return new Promise((resolve) => {
                 // Fallback method if WebRTC fails
                 const fallbackIP = `fallback_${Math.random().toString(36).substr(2, 9)}`;
-
+    
                 window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
-
+    
                 if (!window.RTCPeerConnection) {
                     resolve(fallbackIP);
                     return;
                 }
-
+    
                 const pc = new RTCPeerConnection({
                     iceServers: []
                 });
-
+    
                 pc.createDataChannel("");
-
+    
                 pc.createOffer((offer) => {
                     pc.setLocalDescription(offer);
                 }, () => { });
-
+    
                 pc.onicecandidate = (ice) => {
                     if (!ice || !ice.candidate || !ice.candidate.candidate) {
                         resolve(fallbackIP);
                         return;
                     }
-
+    
                     const myIP = ice.candidate.candidate.split(' ')[4];
                     resolve(myIP);
                     pc.close();
                 };
             });
         }
-
+    
         // Enhanced admin selection function
         async function selectAdminContact() {
-            // Retrieve submission history from localStorage
             const ipAddress = await getClientIP();
             const submissionHistory = JSON.parse(localStorage.getItem('partnershipSubmissions') || '[]');
-
-            // Check IP's previous admin assignment
+    
             const ipPreviousAdmin = submissionHistory
                 .filter(submission => submission.ipAddress === ipAddress)
                 .map(submission => submission.adminNama)
-                .pop(); // Get the most recent admin for this IP
-
-            // Get current time for deterministic selection
+                .pop();
+    
             const currentTime = new Date();
             const currentSeconds = currentTime.getSeconds();
-
-            // Determine admin based on seconds
+    
             let selectedAdmin;
             if (currentSeconds >= 1 && currentSeconds <= 30) {
                 selectedAdmin = adminDetails.find(admin => admin.name === 'Admin Reka');
             } else {
                 selectedAdmin = adminDetails.find(admin => admin.name === 'Admin Livia');
             }
-
-            // Fallback or override logic
+    
             if (ipPreviousAdmin) {
-                // If IP has previous admin, try to alternate
                 const alternateAdmin = adminDetails.find(admin => admin.name !== ipPreviousAdmin);
                 if (alternateAdmin) {
                     selectedAdmin = alternateAdmin;
                 }
             }
-
-            // Update admin metadata
+    
             selectedAdmin.lastAssignedTime = currentTime;
             selectedAdmin.assignmentCount++;
-
+    
             return {
                 number: selectedAdmin.number,
                 name: selectedAdmin.name
             };
         }
-
+    
         // Location status dynamic form
         lokasiUsahaSelect.addEventListener('change', function () {
             if (this.value === 'Sudah') {
@@ -399,58 +393,58 @@
                 additionalAddressInput.value = '';
             }
         });
-
+    
         // Dana Usaha Selection
         danaOptions.forEach(option => {
             option.addEventListener('click', function () {
-                // Remove selected from all options
                 danaOptions.forEach(opt => opt.classList.remove('selected'));
-
-                // Add selected to clicked option
                 this.classList.add('selected');
-
-                // Set hidden input value
                 danaUsahaInput.value = this.getAttribute('data-value');
             });
         });
-
+    
         // Form Submission
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
+    
             if (isSubmitting) return;
-
+    
             if (!danaUsahaInput.value) {
                 alert('Silakan pilih nominal dana usaha');
                 return;
             }
-
+    
             isSubmitting = true;
-
+    
             try {
+                // Disable the submit button to prevent multiple submissions
+                const submitButton = form.querySelector('.submit-btn');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sedang Mengirim...';
+    
                 // Get enhanced random admin selection
                 const randomAdmin = await selectAdminContact();
-
+    
                 const formData = new FormData(form);
-
+    
                 // Modify form data based on location status
                 if (lokasiUsahaSelect.value === 'Belum') {
                     formData.set('alamat-usaha', 'Belum Punya');
                 }
-
+    
                 // Get form values for WhatsApp message
                 const nama = formData.get('nama');
                 const alamat = formData.get('Alamat');
                 const danaUsaha = danaUsahaInput.value;
                 const sumberInformasi = formData.get('sumber-informasi');
-
+    
                 // Add admin to form data for spreadsheet tracking
                 formData.append('admin', randomAdmin.name);
-
+    
                 // Prepare WhatsApp message with additional source information
                 const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha dengan budget ${danaUsaha}. Saya dapat informasi dari ${sumberInformasi}`);
                 const waLink = `https://wa.me/${randomAdmin.number}?text=${waMessage}`;
-
+    
                 // Save data to local storage with IP tracking
                 const submissionData = {
                     nama,
@@ -460,36 +454,53 @@
                     kontakAdmin: randomAdmin.number,
                     adminNama: randomAdmin.name,
                     tanggal: new Date().toISOString(),
-                    ipAddress: await getClientIP() // Store IP for tracking
+                    ipAddress: await getClientIP()
                 };
-
+    
                 // Check and create submissions array in local storage
                 let submissions = JSON.parse(localStorage.getItem('partnershipSubmissions') || '[]');
                 submissions.push(submissionData);
                 localStorage.setItem('partnershipSubmissions', JSON.stringify(submissions));
-
+    
                 // Submit to Google Sheet
-                fetch(scriptURL, { method: 'POST', body: formData })
-                    .then(response => {
-                        if (response.ok) {
-                            // Directly redirect to WhatsApp without additional alerts
-                            window.location.href = waLink;
-                        } else {
-                            alert('Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.');
-                            isSubmitting = false;
-                        }
-                    })
-                    .catch(error => {
-                        alert('Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.');
-                        console.error('Error!', error.message);
-                        isSubmitting = false;
-                    });
+                const response = await fetch(scriptURL, { method: 'POST', body: formData });
+    
+                if (response.ok) {
+                    // Reset form fields
+                    form.reset();
+                    
+                    // Reset dana options
+                    danaOptions.forEach(opt => opt.classList.remove('selected'));
+                    danaUsahaInput.value = '';
+    
+                    // Hide additional address if it was shown
+                    additionalAddressDiv.style.display = 'none';
+                    additionalAddressInput.required = false;
+    
+                    // Redirect to WhatsApp
+                    window.location.href = waLink;
+                } else {
+                    throw new Error('Submission failed');
+                }
             } catch (error) {
-                console.error('Admin selection error:', error);
-                alert('Terjadi kesalahan dalam pemilihan admin. Silakan coba lagi.');
+                console.error('Submission error:', error);
+                alert('Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.');
+                
+                // Re-enable submit button
+                const submitButton = form.querySelector('.submit-btn');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Hubungi Admin di WhatsApp';
+            } finally {
                 isSubmitting = false;
             }
         });
+    
+        // Additional iOS compatibility improvements
+        // Prevent zoom on input focus for iOS
+        const viewportMeta = document.querySelector('meta[name="viewport"]');
+        if (viewportMeta) {
+            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1');
+        }
     </script>
 </body>
 
