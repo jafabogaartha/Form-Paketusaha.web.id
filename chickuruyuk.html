@@ -442,7 +442,7 @@
                 formData.append('admin', randomAdmin.name);
     
                 // Prepare WhatsApp message with additional source information
-                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha dengan budget ${danaUsaha}. Saya dapat informasi dari ${sumberInformasi}`);
+                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha Chickuruyuk dengan budget ${danaUsaha}. Saya dapat informasi dari ${sumberInformasi}`);
                 const waLink = `https://wa.me/${randomAdmin.number}?text=${waMessage}`;
     
                 // Save data to local storage with IP tracking
