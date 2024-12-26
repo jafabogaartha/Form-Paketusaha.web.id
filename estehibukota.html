@@ -303,7 +303,6 @@
     
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwJeHleSLg0JQE87Oc4dwYQv509YqIFeu9FNBu6siTFoty3JGl_Q_psdqHN5MnruBs/exec';
         const form = document.getElementById('partnership-form');
-        const namaUsaha = document.getElementById('Nama Usaha');
         const lokasiUsahaSelect = document.getElementById('lokasi-usaha');
         const additionalAddressDiv = document.getElementById('additional-address');
         const additionalAddressInput = document.getElementById('alamat-usaha');
@@ -443,7 +442,7 @@
                 formData.append('admin', randomAdmin.name);
     
                 // Prepare WhatsApp message with additional source information
-                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha ${namaUsaha} dengan budget ${danaUsaha}. Saya dapat informasi dari ${sumberInformasi}`);
+                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha dengan budget ${danaUsaha}. Saya dapat informasi dari ${sumberInformasi}`);
                 const waLink = `https://wa.me/${randomAdmin.number}?text=${waMessage}`;
     
                 // Save data to local storage with IP tracking
