@@ -195,18 +195,117 @@
             display: none;
             animation: fadeIn 0.4s ease;
         }
+ .welcome-section {
+            text-align: center;
+            margin-bottom: 35px;
+            animation: fadeIn 0.8s ease;
+            padding: 20px;
+            background: linear-gradient(to bottom, rgba(236, 240, 241, 0.3), transparent);
+            border-radius: var(--border-radius);
+        }
+
+        .welcome-section p {
+            margin: 8px 0;
+            line-height: 1.6;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .welcome-section .hashtag {
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-top: 15px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 15px;
+            display: inline-block;
+            border: 2px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: rotate(-2deg);
+        }
+
+        /* New styles for consultation message section */
+        .consultation-message {
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(to bottom, var(--secondary-color), white);
+            border-radius: var(--border-radius);
+            border: 2px dashed var(--accent-color);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .consultation-message p {
+            margin: 10px 0;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .consultation-message .highlight {
+            font-weight: 700;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin-top: 15px;
+            padding: 5px 10px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-radius: var(--border-radius);
+            display: inline-block;
+        }
+
+        /* Animation for new sections */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments for new sections */
+        @media screen and (max-width: 600px) {
+            .welcome-section {
+                padding: 15px;
+                margin-bottom: 25px;
+            }
+
+            .welcome-section p {
+                font-size: 1rem;
+            }
+
+            .welcome-section .hashtag {
+                font-size: 1.1rem;
+                padding: 6px 12px;
+            }
+
+            .consultation-message {
+                padding: 15px;
+                margin: 20px 0;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="form-section">
-            <h1>Form Kemitraan Kentang Gantenk</h1>
+            <h1>Form Kemitraan Chickuruyuk</h1>
+                        <div class="welcome-section">
+                <p>Hallo Calon Mitra.</p>
+                <p>Ini adalah form pendaftaran untuk gabung jadi mitra kami.</p>
+                <p>Kami siap bantu wujudkan bisnis untuk anda.</p>
+                <p>Yuuk Kita Usahakan Sukses Itu.!</p>
+                <p class="hashtag">#2025PunyaUsaha</p>
+            </div>
             <form name="form-kontak" id="partnership-form">
                 <div class="form-input">
                     <div class="form-input" style="display:none;">
                         <label for="Nama Usaha">Nama Usaha</label>
-                        <input type="text" id="Nama Usaha" name="Nama Usaha" value="Kentang Gantenk" required
+                        <input type="text" id="Nama Usaha" name="Nama Usaha" value="Chickuruyuk" required
                             placeholder="Masukkan nama lengkap">
                     </div>
 
@@ -276,6 +375,10 @@
                         <option value="TikTok">TikTok</option>
                         <option value="Lainnya">Sumber Lainnya</option>
                     </select>
+                </div>
+                  <div class="consultation-message">
+                    <p>Setelah isi semua data, dengan klik hubungi admin ini anda akan langsung dapat konsultasi via WhatsApps dengan team CS kami.</p>
+                    <p class="highlight">Yuuk segera konsultasi, tanya dulu juga boleh, GRATIS.!!!</p>
                 </div>
 
                     <button type="submit" class="submit-btn">Hubungi Admin di WhatsApp</button>
