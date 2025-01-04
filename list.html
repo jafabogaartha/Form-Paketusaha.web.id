@@ -8,265 +8,355 @@
     <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
-        /* Import fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+      /* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+:root {
+    --primary-blue: #1a73e8;
+    --secondary-blue: #4285f4;
+    --light-blue: #e8f0fe;
+    --dark-blue: #174ea6;
+    --border-color: #e0e6ed;
+    --text-primary: #202124;
+    --text-secondary: #5f6368;
+    --white: #ffffff;
+    --shadow: 0 2px 6px rgba(26, 115, 232, 0.1);
+}
 
-        body {
-            background-color: #f7f7f7;
-            min-height: 100vh;
-            color: #2d2d2d;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
-        /* Table Container Styling */
-        .table-container {
-            max-width: 1440px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 6px 6px 0 #2d2d2d;
-            border: 3px solid #2d2d2d;
-        }
+body {
+    background-color: var(--white);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
 
-        /* DataTable Styling */
-        .dataTables_wrapper {
-            padding: 1rem;
-        }
+/* Header Styling */
+.header {
+    background: var(--primary-blue);
+    padding: 1rem 0;
+    margin: 0;
+    color: var(--white);
+}
 
-        table.dataTable {
-            border-collapse: separate;
-            border-spacing: 0;
-            width: 100%;
-            border: none;
-        }
+.header-content {
+    width: 100%;
+    padding: 0 1rem;
+}
 
-        table.dataTable thead th {
-            background: #f0f0f0;
-            font-weight: 600;
-            padding: 1rem 1.5rem;
-            border-bottom: 3px solid #2d2d2d;
-            color: #2d2d2d;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.05em;
-        }
+.header-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
 
-        table.dataTable tbody td {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 0.95rem;
-        }
+/* Table Container Styling */
+.table-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--white);
+}
 
-        table.dataTable tbody tr:hover {
-            background-color: #f5f5f5;
-            transform: translateY(-2px);
-            transition: all 0.2s ease;
-        }
+/* DataTable Styling */
+.dataTables_wrapper {
+    padding: 0;
+    width: 100%;
+}
 
-        /* Pagination Styling */
-        .dataTables_paginate {
-            margin-top: 1.5rem;
-            padding: 1rem 0;
-        }
+table.dataTable {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse !important;
+}
 
-        .paginate_button {
-            padding: 0.5rem 1rem;
-            margin: 0 0.25rem;
-            border: 2px solid #2d2d2d;
-            border-radius: 8px;
-            color: #2d2d2d;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+table.dataTable thead th {
+    background: var(--light-blue);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--primary-blue);
+    color: var(--text-primary);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
 
-        .paginate_button:hover {
-            background: #2d2d2d;
-            color: #ffffff;
-        }
+table.dataTable tbody td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
 
-        .paginate_button.current {
-            background: #2d2d2d;
-            color: #ffffff;
-        }
+table.dataTable tbody tr:hover {
+    background-color: var(--light-blue);
+    transition: background-color 0.2s ease;
+}
 
-        /* Popup Styling */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
+/* Search Box Styling */
+.search-container {
+    width: 100%;
+    padding: 1rem;
+    background: var(--white);
+}
 
-        .popup-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
+.search-box {
+    position: relative;
+    width: 100%;
+}
 
-        .popup-content {
-            background: #ffffff;
-            width: 90%;
-            max-width: 500px;
-            padding: 2rem;
-            border-radius: 24px;
-            border: 3px solid #2d2d2d;
-            box-shadow: 8px 8px 0 #2d2d2d;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-        }
+.search-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
 
-        .popup-overlay.active .popup-content {
-            transform: translateY(0);
-        }
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
 
-        .popup-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid #2d2d2d;
-        }
+.search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
 
-        .popup-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #2d2d2d;
-        }
+/* Pagination Styling */
+.dataTables_paginate {
+    padding: 1rem;
+    text-align: right;
+}
 
-        .popup-close {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #2d2d2d;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.25rem;
-            transition: all 0.2s ease;
-        }
+.paginate_button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    border: 1px solid var(--primary-blue);
+    border-radius: 4px;
+    color: var(--primary-blue);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
-        .popup-close:hover {
-            background: #2d2d2d;
-            color: #ffffff;
-        }
+.paginate_button:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+}
 
-        .popup-body p {
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-            background: #f5f5f5;
-            border-radius: 12px;
-            border: 2px solid #2d2d2d;
-        }
+.paginate_button.current {
+    background: var(--primary-blue);
+    color: var(--white);
+}
 
-        .popup-button {
-            margin-top: 1.5rem;
-            padding: 0.75rem 1.5rem;
-            background: #ffffff;
-            border: 2px solid #2d2d2d;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s ease;
-            box-shadow: 4px 4px 0 #2d2d2d;
-        }
+/* Length Menu and Info Styling */
+.dataTables_length {
+    padding: 1rem;
+    color: var(--text-secondary);
+}
 
-        .popup-button:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 #2d2d2d;
-        }
+.dataTables_length select {
+    padding: 0.25rem 0.5rem;
+    margin: 0 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
 
-        .popup-button:active {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 #2d2d2d;
-        }
+.dataTables_info {
+    padding: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
 
-        /* Search Box Styling */
-        .search-container {
-            max-width: 1440px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-            display: flex;
-            justify-content: center;
-            /* Centers the search-box horizontally */
-        }
+/* Popup Styling */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
 
-        .search-box {
-            position: relative;
-            max-width: 600px;
-            width: 100%;
-            /* Ensures the search box takes full width up to max-width */
-        }
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
 
-        .search-input {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            border: 3px solid #2d2d2d;
-            border-radius: 16px;
-            font-size: 1rem;
-            background: #ffffff;
-            box-shadow: 4px 4px 0 #2d2d2d;
-            transition: all 0.2s ease;
-        }
+.popup-content {
+    background: var(--white);
+    width: 90%;
+    max-width: 500px;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
 
-        .search-input:focus {
-            outline: none;
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 #2d2d2d;
-        }
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
 
-        .search-icon {
-            position: absolute;
-            right: 1.25rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #2d2d2d;
-        }
+.popup-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
 
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .table-container {
-                margin: 1rem;
-                padding: 1rem;
-                box-shadow: 4px 4px 0 #2d2d2d;
-            }
+.popup-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
-            .popup-content {
-                width: 95%;
-                padding: 1.5rem;
-                margin: 1rem;
-                box-shadow: 6px 6px 0 #2d2d2d;
-            }
+.popup-close:hover {
+    background: var(--light-blue);
+    color: var(--primary-blue);
+}
 
-            table.dataTable thead th,
-            table.dataTable tbody td {
-                padding: 0.75rem 1rem;
-            }
-        }
+.popup-body p {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    background: var(--light-blue);
+    border-radius: 6px;
+}
 
-        .header {
-            text-align: center;
-        }
+.popup-button {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-blue);
+    border: none;
+    border-radius: 6px;
+    color: var(--white);
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.popup-button:hover {
+    background: var(--dark-blue);
+}
+
+/* Loading Spinner */
+#loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--light-blue);
+    border-top: 3px solid var(--primary-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-blue);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-blue);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 0.75rem;
+    }
+    
+    .search-container {
+        padding: 0.75rem;
+    }
+
+    table.dataTable thead th,
+    table.dataTable tbody td {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .popup-content {
+        width: 95%;
+        margin: 0.75rem;
+        padding: 1rem;
+    }
+    
+    .dataTables_length,
+    .dataTables_info,
+    .dataTables_paginate {
+        padding: 0.75rem;
+    }
+}
+
+/* Error Message Styling */
+.error-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+.error-message button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.error-message button:hover {
+    background: var(--dark-blue);
+}
     </style>
 </head>
 
