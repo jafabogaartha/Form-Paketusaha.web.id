@@ -402,7 +402,7 @@
 
 
     <script>
-        // Enhanced Admin Details with additional metadata
+        // Data Admin
         const adminDetails = [
             {
                 number: '6282124952606',
@@ -420,17 +420,21 @@
 
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwJeHleSLg0JQE87Oc4dwYQv509YqIFeu9FNBu6siTFoty3JGl_Q_psdqHN5MnruBs/exec';
         const form = document.getElementById('partnership-form');
+        // Perbaikan nama variabel dan selector
+        const namaUsahaInput = document.getElementById('Nama Usaha');
         const lokasiUsahaSelect = document.getElementById('lokasi-usaha');
         const additionalAddressDiv = document.getElementById('additional-address');
         const additionalAddressInput = document.getElementById('alamat-usaha');
         const danaOptions = document.querySelectorAll('.dana-option');
         const danaUsahaInput = document.getElementById('dana-usaha');
+        const kendalaInput = document.getElementById('Kendala');
+        const keinginanInput = document.getElementById('Keinginan');
+
         let isSubmitting = false;
 
-        // Function to get IP address (browser-based method)
+        // Fungsi untuk mendapatkan IP address
         function getClientIP() {
             return new Promise((resolve) => {
-                // Fallback method if WebRTC fails
                 const fallbackIP = `fallback_${Math.random().toString(36).substr(2, 9)}`;
 
                 window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
@@ -463,7 +467,7 @@
             });
         }
 
-        // Enhanced admin selection function
+        // Fungsi pemilihan admin
         async function selectAdminContact() {
             const ipAddress = await getClientIP();
             const submissionHistory = JSON.parse(localStorage.getItem('partnershipSubmissions') || '[]');
@@ -499,7 +503,7 @@
             };
         }
 
-        // Location status dynamic form
+        // Event listener untuk status lokasi
         lokasiUsahaSelect.addEventListener('change', function () {
             if (this.value === 'Sudah') {
                 additionalAddressDiv.style.display = 'block';
@@ -511,7 +515,7 @@
             }
         });
 
-        // Dana Usaha Selection
+        // Event listener untuk pilihan dana
         danaOptions.forEach(option => {
             option.addEventListener('click', function () {
                 danaOptions.forEach(opt => opt.classList.remove('selected'));
@@ -520,7 +524,7 @@
             });
         });
 
-        // Form Submission
+        // Event submit form
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -534,76 +538,74 @@
             isSubmitting = true;
 
             try {
-                // Disable the submit button to prevent multiple submissions
                 const submitButton = form.querySelector('.submit-btn');
                 submitButton.disabled = true;
                 submitButton.textContent = 'Sedang Mengirim...';
 
-                // Get enhanced random admin selection
                 const randomAdmin = await selectAdminContact();
-
                 const formData = new FormData(form);
 
-                // Modify form data based on location status
                 if (lokasiUsahaSelect.value === 'Belum') {
                     formData.set('alamat-usaha', 'Belum Punya');
                 }
 
-                // Get form values for WhatsApp message
+                // Ambil nilai form untuk pesan WhatsApp
                 const nama = formData.get('nama');
                 const alamat = formData.get('Alamat');
                 const danaUsaha = danaUsahaInput.value;
                 const sumberInformasi = formData.get('sumber-informasi');
+                const kendala = kendalaInput.value;
+                const keinginan = keinginanInput.value;
+                const namaUsaha = namaUsahaInput.value;
 
-                // Add admin to form data for spreadsheet tracking
                 formData.append('admin', randomAdmin.name);
 
-                // Prepare WhatsApp message with additional source information
-                const waMessage = encodeURIComponent(`Hallo kak admin, aku ${nama} dari ${alamat} mau buka usaha Tahu Nyonyor dengan budget ${danaUsaha}. Saya dapat informasi dari ${sumberInformasi}`);
+                // Format pesan WhatsApp dalam bahasa Indonesia
+                const waMessage = encodeURIComponent(
+                    `Halo kak admin, saya ${nama} dari ${alamat}.\n\n` +
+                    `Saya tertarik untuk membuka usaha ${namaUsaha} dengan budget ${danaUsaha}.\n` +
+                    `${kendala ? `\nKendala yang saya hadapi:\n${kendala}` : ''}` +
+                    `${keinginan ? `\n\nKeinginan saya:\n${keinginan}` : ''}` +
+                    `\n\nSaya mendapatkan informasi dari: ${sumberInformasi}`
+                );
                 const waLink = `https://wa.me/${randomAdmin.number}?text=${waMessage}`;
 
-                // Save data to local storage with IP tracking
+                // Simpan data ke local storage
                 const submissionData = {
+                    namaUsaha,
                     nama,
                     alamat,
                     danaUsaha,
                     sumberInformasi,
+                    kendala,
+                    keinginan,
                     kontakAdmin: randomAdmin.number,
                     adminNama: randomAdmin.name,
                     tanggal: new Date().toISOString(),
                     ipAddress: await getClientIP()
                 };
 
-                // Check and create submissions array in local storage
                 let submissions = JSON.parse(localStorage.getItem('partnershipSubmissions') || '[]');
                 submissions.push(submissionData);
                 localStorage.setItem('partnershipSubmissions', JSON.stringify(submissions));
 
-                // Submit to Google Sheet
+                // Kirim ke Google Sheet
                 const response = await fetch(scriptURL, { method: 'POST', body: formData });
 
                 if (response.ok) {
-                    // Reset form fields
                     form.reset();
-
-                    // Reset dana options
                     danaOptions.forEach(opt => opt.classList.remove('selected'));
                     danaUsahaInput.value = '';
-
-                    // Hide additional address if it was shown
                     additionalAddressDiv.style.display = 'none';
                     additionalAddressInput.required = false;
-
-                    // Redirect to WhatsApp
                     window.location.href = waLink;
                 } else {
-                    throw new Error('Submission failed');
+                    throw new Error('Pengiriman gagal');
                 }
             } catch (error) {
-                console.error('Submission error:', error);
+                console.error('Error pengiriman:', error);
                 alert('Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.');
 
-                // Re-enable submit button
                 const submitButton = form.querySelector('.submit-btn');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Hubungi Admin di WhatsApp';
@@ -612,8 +614,7 @@
             }
         });
 
-        // Additional iOS compatibility improvements
-        // Prevent zoom on input focus for iOS
+        // Perbaikan kompatibilitas iOS
         const viewportMeta = document.querySelector('meta[name="viewport"]');
         if (viewportMeta) {
             viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1');
