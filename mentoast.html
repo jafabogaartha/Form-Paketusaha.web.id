@@ -195,7 +195,8 @@
             display: none;
             animation: fadeIn 0.4s ease;
         }
- .welcome-section {
+
+        .welcome-section {
             text-align: center;
             margin-bottom: 35px;
             animation: fadeIn 0.8s ease;
@@ -260,6 +261,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -294,7 +296,7 @@
     <div class="container">
         <div class="form-section">
             <h1>Form Kemitraan Mentoast</h1>
-                        <div class="welcome-section">
+            <div class="welcome-section">
                 <p>Hallo Calon Mitra.</p>
                 <p>Ini adalah form pendaftaran untuk gabung jadi mitra kami.</p>
                 <p>Kami siap bantu wujudkan bisnis untuk anda.</p>
@@ -368,27 +370,31 @@
                         <input type="hidden" id="dana-usaha" name="dana-usaha" required>
                     </div>
                     <div class="form-input">
-                    <label for="sumber-informasi">Sumber Informasi</label>
-                    <select id="sumber-informasi" name="sumber-informasi" required>
-                        <option value="" selected disabled>Pilih Sumber Informasi</option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="Lainnya">Sumber Lainnya</option>
-                    </select>
-                </div>
-                <div class="form-input">
-                    <label for="Kendala">Ceritakan masalahmu, biar kami bantu selesaikan dengan produk kami?</label>
-                    <input type="text" id="Kendala" name="Kendala" placeholder="Apa masalahmu, biar kami bantu selesaikan!">
-                </div>
-                <div class="form-input">
-                    <label for="Keinginan">Kasih tau keinginan kamu, kami bantu wujudkan dengan produk kami?</label>
-                    <input type="text" id="Keinginan" name="Keinginan" placeholder="Masukkan Keinginan kamu bersama kami">
-                </div>
-                
-                  <div class="consultation-message">
-                    <p>Setelah isi semua data, dengan klik hubungi admin ini anda akan langsung dapat konsultasi via WhatsApps dengan team CS kami.</p>
-                    <p class="highlight">Yuuk segera konsultasi, tanya dulu juga boleh, GRATIS.!!!</p>
-                </div>
+                        <label for="sumber-informasi">Sumber Informasi</label>
+                        <select id="sumber-informasi" name="sumber-informasi" required>
+                            <option value="" selected disabled>Pilih Sumber Informasi</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="Lainnya">Sumber Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-input">
+                        <label for="Kendala">Ceritakan masalahmu, biar kami bantu selesaikan dengan produk kami?</label>
+                        <input type="text" id="Kendala" name="Kendala"
+                            placeholder="Apa masalahmu, biar kami bantu selesaikan!" required>
+                    </div>
+                    <div class="form-input">
+                        <label for="Keinginan">Kasih tau keinginan kamu, kami bantu wujudkan dengan produk kami?</label>
+                        <input type="text" id="Keinginan" name="Keinginan"
+                            placeholder="Masukkan Keinginan kamu bersama kami" required>
+                    </div>
+
+
+                    <div class="consultation-message">
+                        <p>Setelah isi semua data, dengan klik hubungi admin ini anda akan langsung dapat konsultasi via
+                            WhatsApps dengan team CS kami.</p>
+                        <p class="highlight">Yuuk segera konsultasi, tanya dulu juga boleh, GRATIS.!!!</p>
+                    </div>
 
                     <button type="submit" class="submit-btn">Hubungi Admin di WhatsApp</button>
             </form>
